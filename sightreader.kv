@@ -1,0 +1,172 @@
+#:import C kivy.utils.get_color_from_hex
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+
+<SightReaderLayout>:
+    cols:1
+    rows:5
+    padding:20
+    spacing:"15dp"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    HeaderLayout:
+        size_hint:1,0.15
+    MusicStaffLayout:
+        size_hint:1,0.4
+    Separator
+    KeyboardNotes
+        size_hint:1,0.4
+    TailLayout
+        size_hint:1,0.05
+
+<PointsWidget>
+    cols:1
+    rows:1
+    size_hint:0.09,0.25
+    ScoreLabel:
+        id: score
+        text: '[b]1[/b]/10'
+        size_hint:0.05,0.25
+
+
+<ScoreLabel@Label>:
+    font_name: 'Roboto'
+    font_size: 30
+    color: 0.,0.,0.,1
+    markup: True
+
+
+<HeaderLayout>
+    cols:4
+    rows:1
+    #padding:10
+    #spacing:"5dp"
+    #size_hint:1,0.45
+    PointsWidget
+    MDIconButton:
+        icon: "home"
+        #text:"Back"
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.primary_light
+        on_release:
+            self.parent.back_to_Menu()
+            app.root.current = "menu"
+        size_hint:0.05,0.1
+    ScoreLabel:
+        id: header_label
+        text:""
+        font_name: 'Roboto'
+        font_size: 12
+        color: 1,0,0.7,1
+        size_hint:0.05,0.05
+    ScoreLabel:
+        id: stopwatch
+        text: '[b]00[/b]'
+        size_hint:0.05,0.05
+
+
+<MusicStaffLayout>:
+    cols:3
+    rows:1
+    #padding:15
+    #spacing:"5dp"
+    #size_hint:0.5,0.5
+    #pos_hint: {"center_x": 0.0, "center_y":0.0}
+    Label:
+        text:""
+        size_hint:0.05,0.05
+    SightReaderButton:
+        id:cta
+        text: ' '
+        pos_hint: {"center_x": 1.0, "center_y":1.0}
+        size_hint:0.1,0.1
+        background_normal: 'images/loading.png'
+        background_down: 'images/loading.png'
+        #background_color: C('#FFCC66')
+        color: '#0C6170'
+    Label:
+        text:""
+        size_hint:0.05,0.05
+
+
+
+<Separator@Widget>
+    size_hint_y: None
+    thickness: 9
+    margin: 1
+    height: self.thickness + 2 * self.margin
+    color: 0.752,0.752,0.752
+    canvas:
+        Color:
+            rgb: 250,250,0,1
+        Rectangle:
+            pos: self.x + self.margin, self.y + self.margin + 1
+            size: self.width - 2 * self.margin , self.thickness
+
+
+<KeyboardNotes>:
+    cols:4
+    rows:2
+    #padding: 20
+    #spacing: "5dp"
+    #pos_hint: "x:0, y:0"
+    #size_hint:0.5,1
+    ColorMusicButton:
+        #on_press: root.play_sound("C4")
+        on_release: root.match_response("C4")
+        text: "C"
+    ColorMusicButton:
+        #on_press: root.play_sound("D4")
+        on_release: root.match_response("D4")
+        text: "D"
+    ColorMusicButton:
+        #on_press: root.play_sound("E4")
+        on_release: root.match_response("E4")
+        text: "E"
+    ColorMusicButton:
+        #on_press: root.play_sound("F4")
+        on_release: root.match_response("F4")
+        text: "F"
+    ColorMusicButton:
+        #on_press: root.play_sound("G4")
+        on_release: root.match_response("G4")
+        text: "G"
+    ColorMusicButton:
+        #on_press: root.play_sound("A4")
+        on_release: root.match_response("A4")
+        text: "A"
+    ColorMusicButton:
+        #on_press: root.play_sound("B4")
+        on_release: root.match_response("B4")
+        text: "B"
+    ColorMusicButton:
+        #on_press: root.play_sound("C5")
+        on_release: root.match_response("C5")
+        text: "C"
+
+
+
+<ColorMusicButton>:
+    #size_hint: .12, None
+    background_color: 0.1, 0.5, 0.6, 1
+
+
+<TailLayout@BoxLayout>
+    #padding: 20
+    #pos_hint: {'center_x': 0.5, 'center_y': .5}
+    #size_hint: 0.05,0.05
+    CreditsLabel:
+        text: "[b]Music Learner[/b] v2.0"
+        #color: 1,0,0.7,1
+        color: C('#FF2768')
+        #size_hint: 0.04,0.04
+
+
+<CreditsLabel@Label>:
+    font_name: 'Roboto'
+    font_size: 10
+    color: 0.,0.,0.,1
+    markup: True

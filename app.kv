@@ -1,0 +1,255 @@
+#:import C kivy.utils.get_color_from_hex
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+
+ScreenManager:
+    transition: RiseInTransition()
+
+    Screen:
+        name: "menu"
+        MenuLayout
+    Screen:
+        name:"sightreader"
+        SightReaderDragDrop:
+            id: sightreader
+    Screen:
+        name:"sightreaderquiz"
+        SightReaderLayout:
+            id: sightreader2
+
+
+<DroppableArea>:
+    drag_classes: ['music_notes', ]
+    size_hint: None, None
+
+<DraggableButton>:
+    drag_cls: 'music_notes'
+    drag_timeout: 0
+    font_size: '30dp'
+    icon_size: "64sp"
+    opacity: .4 if root.is_being_dragged else 1.
+    #tooltip_text: 'Drag the notes to the right square.'
+    canvas.before:
+        Color:
+            rgba: 0.4, 0.3, 0.1, 1
+        Line:
+            dash_length: 4
+            dash_offset: 4
+            rectangle: [*self.pos, *self.size, ]
+
+
+<SightReaderDragDrop>:
+    #orientation: 'vertical'
+    rows:4
+    cols:1
+    #padding: 30
+    spacing: 10
+    #size:root.size
+    size_hint: (.95, 1)
+    pos_hint: {'x':.02, 'center_y': 0.5}     #'x':1 takes full x,   center_y:0.5  will be at the middle between y and top.
+    id:SightReaderLayout
+
+    MDTopAppBar:
+        title: "Music Sight Reader"
+        use_overflow: True
+        elevation: 0
+        #right_action_items: [["dots-vertical", lambda x: app.callback_1()], ["clock", lambda x: app.callback_2()]]
+        right_action_items: [ ["home", lambda x: app.home_callback(x), "Home", "Home"]]
+        size_hint: (0.5, 0.1)
+
+    GridLayout:
+        md_bg_color: app.theme_cls.bg_normal
+        orientation: 'lr-tb'
+        size_hint: (0.9, 0.5)
+        padding: 3
+        spacing: 5
+        pos_hint: {'top': 1}
+        cols: 4
+        rows:1
+        id: dropable_layout
+        DroppableArea:
+            #pos_hint: {'top': 1}
+            size_hint: (0.25, 1)
+            id: box_1
+            line_color: "#EEFF41"
+            #color_cls: 'red'
+            #text:"A"
+            #background_color: 1, 0, 0, 1
+            md_bg_color: app.theme_cls.accent_dark
+            font_size: dp(40)
+        DroppableArea:
+            #pos_hint: {'top': 1}
+            size_hint: (0.25, 1)
+            md_bg_color: app.theme_cls.bg_dark
+            id: box_2
+            line_color: "#BF360C"
+            #color_cls: 'yellow'
+            #text:"yellow"
+            #background_color: C('#7FFF00')
+            md_bg_color: app.theme_cls.accent_light
+            font_size: dp(40)
+        DroppableArea:
+            #pos_hint: {'top': 1}
+            size_hint: (0.25, 1)
+            id: box_3
+            line_color: "#EEFF41"
+            #color_cls: 'blue'
+            #text:"Blue"
+            #background_color: C('#FFB74D')
+            md_bg_color: app.theme_cls.accent_dark
+            font_size: dp(40)
+        DroppableArea:
+            id: box_4
+            #pos_hint: {'top': 1}
+            size_hint: (0.25, 1)
+
+            line_color: "#BF360C"
+            #color_cls: 'green'
+            #text:"Green"
+            #background_color: C('#FBE7C6')
+            md_bg_color: app.theme_cls.accent_light
+            font_size: dp(40)
+    GridLayout:
+        md_bg_color: app.theme_cls.bg_darkest
+        id: where_the_items_initially_live
+        #size_hint_y: None
+        size_hint: (0.9, 0.3)
+        cols: 2
+        rows:2
+        padding: 5
+        spacing: 10
+        #pos_hint: {'top': 1}
+        #size:(250,250)
+    MDLabel:
+        size_hint: (1, 0.1)
+        text: "Rubato Music Software © 2023"
+        halign: "center"
+        font_size: dp(10)
+    #MDBottomAppBar:
+        #size_hint: (1, 0.1)
+        #MDTopAppBar:
+            #size_hint: (1, 0.1)
+            #title: "Rubato Music Software"
+            #icon: "images/icons8-32.png"
+            #type: "bottom"
+            #elevation: 0
+
+
+#============================================================
+
+<MenuLayout>
+    cols:1
+    rows:5
+    padding:3
+    spacing:"5dp"
+    id: menu
+    MDLabel:
+        text: "Music Sight Reader"
+        halign: "center"
+        font_name: 'Archeologicaps.ttf'
+        font_size: 25
+        #font_style: "H5"
+        #text_color: theme_cls.primary_color
+    MenuItems:
+    MDLabel:
+    MDLabel:
+    MDLabel:
+        text: "Rubato Music Software © 2023"
+        #font_name: 'Archeologicaps.ttf'
+        halign: "center"
+        font_size: 9
+        #font_style: "H6"
+
+
+<MenuItems>:
+    cols:3
+    rows:7
+    padding:8
+    spacing:"18dp"
+    Label:
+    MDRectangleFlatButton:
+        text:"Beginner"
+        on_release:
+            print(self.parent.ids.mode.active)
+            #print(self.parent.ids.treble_clef_switch.active)
+            if self.parent.ids.mode.active: self.parent.start_sight_reader_quiz(0,self.parent.ids.treble_clef_switch.active,self.parent.ids.bass_clef_switch.active,self.parent.ids.mode.active)
+            else: self.parent.start_dragdrop_sightreader(1,self.parent.ids.treble_clef_switch.active,self.parent.ids.bass_clef_switch.active,self.parent.ids.mode.active)
+            if self.parent.ids.mode.active:app.root.current = "sightreaderquiz"
+            else:app.root.current = "sightreader"
+    Label:
+    Label:
+    MDRectangleFlatButton:
+        text:"Intermediate"
+        on_release:
+            print(self.parent.ids.mode.active)
+            #print(self.parent.ids.treble_clef_switch.active)
+            if self.parent.ids.mode.active: self.parent.start_sight_reader_quiz(1,self.parent.ids.treble_clef_switch.active,self.parent.ids.bass_clef_switch.active,self.parent.ids.mode.active)
+            else: self.parent.start_dragdrop_sightreader(2,self.parent.ids.treble_clef_switch.active,self.parent.ids.bass_clef_switch.active,self.parent.ids.mode.active)
+            if self.parent.ids.mode.active:app.root.current = "sightreaderquiz"
+            else:app.root.current = "sightreader"
+    Label:
+    Label:
+    MDRectangleFlatButton:
+        text:"Advanced"
+        disabled: True
+    Label:
+    Label:
+    ClefSelection
+        cols:2
+        rows:3
+        padding:3
+        spacing:"2dp"
+        MDLabel:
+            text:"Bass Clef"
+            #font_size:21
+            halign: "left"
+        MDSwitch:
+            id:bass_clef_switch
+            active: True
+            #on_active: root.ids.treble_clef_switch.disabled = not self.active
+            #on_active:if not bass_clef_switch.active:treble_clef_switch.active = True
+            on_active: if not self.active: root.ids.treble_clef_switch.active = True
+        MDLabel:
+            text:"Treble Clef"
+            #font_size:23
+            halign: "left"
+        MDSwitch:
+            id:treble_clef_switch
+            active: True
+            #on_active: self.ids.bass_clef.bass_clef_switch.disabled = not self.active
+            #on_active: root.ids.bass_clef_switch.disabled = not self.active
+            #on_active: if not self.active: root.ids.bass_clef_switch.active = True
+            on_active: if not self.active: root.ids.bass_clef_switch.active = True
+        MDLabel:
+            text:"Quiz mode"
+            #font_size:20
+            halign: "left"
+        MDSwitch:
+            id:mode
+            active: False
+    #ClefSelectionSwitchTreble:
+    Label:
+    Label:
+    Label:
+    Label:
+    Label:
+    #ClefSelection:
+    Label:
+
+
+<ClefSelectionSwitchTreble>
+    id:treble_clef
+    cols:2
+    rows:1
+    padding:3
+    spacing:"5dp"
+    MDLabel:
+        text:"Treble Clef"
+    MDSwitch:
+        id:treble_clef_switch
+        active: True
+        #on_active: self.ids.bass_clef.bass_clef_switch.disabled = not self.active
+        on_active: print(list(SampleApp.get_running_app().root.ids.keys()))
+
+
+############################
+
